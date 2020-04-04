@@ -1,0 +1,55 @@
+#
+#
+#
+settings:
+  base-command: "vouchers"
+  alias:
+    - "voucher"
+
+messages:
+  command-usage: '&8[&6Vouchers&8] &7Incorrect Usage! Use &6/{command} {usage}&7!'
+  no-permission: '&8[&6Vouchers&8] &7You do not have permission to do this!'
+  unknown-command: '&8[&6Vouchers&8] &7Unknown Command!'
+  reload-plugin: '&8[&6Vouchers&8] &7Plugin was successfully reloading in &6%time%ms&7!'
+  invalid-target: '&8[&6Vouchers&8] &7Specified target is either null or is offline!'
+  invalid-voucher: '&8[&6Vouchers&8] &cThe voucher you tried to use is of an invalid type! Please contact an
+  administrator! &8(&f%voucher-uuid%&8)'
+  active-multiplier: '&8[&6Vouchers&8] &7You currently have an incompatible booster active! Once it runs out,
+  you may redeem your voucher!'
+
+vouchers:
+  plaque-2:
+    item-material: Sunflower
+    display-name: '&8&l[&6&l+&8&l] &eSell Multiplier &8&l[&6&l+&8&l]'
+    lore:
+      - '&7&oRight-Click to redeem.'
+      - '&eMultiplier: &73'
+      - '&eDuration: &70h 15m 0s'
+    glowing: false
+    autosell: true
+    multiplier: 3.0
+    commands:
+      - '[console] asa stackmultiplier %player_name% 3 015'
+      - '[message] &8[&6Vouchers&8] &7Hey &6%player_name%&7! You have consumed a voucher!'
+  plaque-3:
+    item-material: Sunflower
+    display-name: '&8&l[&6&l+&8&l] &eSell Multiplier &8&l[&6&l+&8&l]'
+    lore:
+      - '&7&oRight-Click to redeem.'
+      - '&eMultiplier: &71.5'
+      - '&eDuration: &70h 15m 0s'
+    glowing: true
+    autosell: true
+    multiplier: 1.5
+    commands:
+      - '[console] asa stackmultiplier %player_name% 1.5 015'
+      - '[message] &8[&6Vouchers&8] &7Hey &6%player_name%&7! You have consumed a voucher!'
+  test:
+    item-material: Paper
+    display-name: 'Test Voucher'
+    lore:
+      - 'Test'
+    glowing: true
+    autosell: false
+    commands:
+      - '[message] U suck'

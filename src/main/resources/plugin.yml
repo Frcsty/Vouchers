@@ -1,0 +1,12 @@
+name: Vouchers
+version: ${project.version}
+main: frcsty.github.vouchers.VouchersPlugin
+depend: ["AutoSell"]
+
+permissions:
+  vouchers.reload:
+    default: op
+    description: Grants access to /vouchers reload
+  vouchers.give:
+    default: op
+    description: Grants access to /vouchers give
