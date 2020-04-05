@@ -4,6 +4,7 @@ import com.codeitforyou.lib.api.command.Command;
 import com.codeitforyou.lib.api.general.StringUtil;
 import com.codeitforyou.lib.api.item.ItemBuilder;
 import com.codeitforyou.lib.api.xseries.XMaterial;
+import com.google.common.primitives.Ints;
 import frcsty.github.vouchers.VouchersPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -27,10 +28,11 @@ import java.util.logging.Level;
 public class GiveCommand
 {
 
-    @Command(permission = "vouchers.give", aliases = {"give"}, usage = "give <target/all> [voucher]", requiredArgs = 2)
+    @Command(permission = "vouchers.give", aliases = {"give"}, usage = "give <target/all> [voucher] (amount)", requiredArgs = 2)
     public static void execute(final CommandSender sender, final VouchersPlugin plugin, final String[] args)
     {
         final String voucher = args[1];
+        int amount = 1;
         final ConfigurationSection messages = plugin.getConfig().getConfigurationSection("messages");
         final ConfigurationSection vouchers = plugin.getConfig().getConfigurationSection("vouchers");
         Player target;
@@ -52,6 +54,7 @@ public class GiveCommand
         List<String> lore = null;
         boolean glowing = false;
         boolean autosell = false;
+        boolean store = false;
 
         final Set<String> v = vouchers.getKeys(false);
         for (String vo : v)
@@ -63,6 +66,7 @@ public class GiveCommand
                 lore = vouchers.getStringList(vo + ".lore");
                 glowing = vouchers.getBoolean(vo + ".glowing");
                 autosell = vouchers.getBoolean(vo + ".autosell");
+                store = vouchers.getBoolean(vo + ".store");
                 break;
             }
         }
@@ -95,6 +99,12 @@ public class GiveCommand
             builder.withNBTString("autosell", String.valueOf(vouchers.getInt(voucher + ".multiplier")));
         }
 
+        if (!store)
+        {
+            amount = args.length == 3 ? (Ints.tryParse(args[2]) == null ? 1 : Integer.parseInt(args[2])) : 1;
+            builder.withNBTString("voucher-store", String.valueOf(false));
+        }
+
         if (!args[0].equalsIgnoreCase("all"))
         {
             target = Bukkit.getPlayerExact(args[0]);
@@ -105,13 +115,13 @@ public class GiveCommand
                 return;
             }
 
-            final String voucher_uuid = UUID.randomUUID().toString();
+            if (store)
+            {
+                createVoucherData(builder, plugin);
+                plugin.getDataManager().saveFileAsync(true);
+            }
 
-            builder.withNBTString("voucher-uuid", voucher_uuid);
-            plugin.getDataManager().setVoucherStatus(voucher_uuid, false);
-            plugin.getDataManager().saveFileAsync(true);
-
-            giveVoucher(target, builder);
+            giveVoucher(target, builder, amount);
         }
         else
         {
@@ -131,12 +141,12 @@ public class GiveCommand
             {
                 final UUID uuid = addressStatus.get(address);
 
-                final String voucher_uuid = UUID.randomUUID().toString();
+                if (store)
+                {
+                    createVoucherData(builder, plugin);
+                }
 
-                builder.withNBTString("voucher-uuid", voucher_uuid);
-                plugin.getDataManager().setVoucherStatus(voucher_uuid, false);
-
-                giveVoucher(Bukkit.getPlayer(uuid), builder);
+                giveVoucher(Bukkit.getPlayer(uuid), builder, amount);
             }
 
             plugin.getDataManager().saveFileAsync(true);
@@ -144,18 +154,32 @@ public class GiveCommand
 
     }
 
-    private static void giveVoucher(final Player target, final ItemBuilder builder)
+    private static void giveVoucher(final Player target, final ItemBuilder builder, final int amount)
     {
         if (target.getInventory().firstEmpty() != -1)
         {
-            target.getInventory().addItem(builder.getItem());
+            for (int i = 0; i < amount; i++)
+            {
+                target.getInventory().addItem(builder.getItem());
+            }
         }
         else
         {
             final Location location = target.getLocation();
 
-            location.getWorld().dropItem(location, builder.getItem());
+            for (int i = 0; i < amount; i++)
+            {
+                location.getWorld().dropItem(location, builder.getItem());
+            }
         }
     }
 
+    private static void createVoucherData(final ItemBuilder builder, final VouchersPlugin plugin)
+    {
+        final String voucher_uuid = UUID.randomUUID().toString();
+        builder.withNBTString("voucher-uuid", voucher_uuid);
+        builder.withNBTString("voucher-store", String.valueOf(true));
+
+        plugin.getDataManager().setVoucherStatus(voucher_uuid, false);
+    }
 }

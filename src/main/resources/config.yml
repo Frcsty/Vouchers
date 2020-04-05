@@ -18,38 +18,167 @@ messages:
   you may redeem your voucher!'
 
 vouchers:
-  plaque-2:
+  rename-nocolor:
+    item-material: PAPER
+    display-name: '&3&l/RENAME VOUCHER &7(No Colors)'
+    lore:
+      - '&7&oRight-Click to redeem.'
+      - '&fGives you /rename. (no colors)'
+    glowing: true
+    autosell: false
+    store: true
+    commands:
+      - '[console] lp user %player% permission set epicrename.rename'
+      - '[message] &8[&6Vouchers&8] &7You just redeemed your &3&l/RENAME VOUCHER&7 (NO COLORS).'
+  rename:
+    item-material: PAPER
+    display-name: '&6&l/RENAME VOUCHER'
+    lore:
+      - '&7&oRight-Click to redeem.'
+      - '&fGives you /rename with colors.'
+    glowing: true
+    autosell: false
+    store: true
+    commands:
+      - '[console] lp user %player% permission set epicrename.rename.format.*'
+      - '[message] &8[&6Vouchers&8] &7You just redeemed your &3&l/RENAME VOUCHER&7.'
+  hat:
+    item-material: PAPER
+    display-name: '&6&l/HAT VOUCHER'
+    lore:
+      - '&7&oRight-Click to redeem.'
+      - '&fGives you /hat.'
+    glowing: true
+    autosell: false
+    store: true
+    commands:
+      - '[console] lp user %player% permission set essentials.hat'
+      - '[message] &8[&6Vouchers&8] &7You just redeemed your &6&l/HAT VOUCHER&7.'
+  fly:
+    item-material: PAPER
+    display-name: '&3&l/FLY VOUCHER'
+    lore:
+      - '&7&oRight-Click to redeem.'
+      - '&fGives you /fly.'
+    glowing: true
+    autosell: false
+    store: true
+    commands:
+      - '[console] lp user %player% permission set essentials.fly'
+      - '[message] &8[&6Vouchers&8] &7You just redeemed your &3&l/FLY VOUCHER&7.'
+  nick:
+    item-material: PAPER
+    display-name: '&a&l/NICK &7(No Colors)'
+    lore:
+      - '&7&oRight-Click to redeem.'
+      - '&fGives you /nick (no colors).'
+    glowing: true
+    autosell: false
+    store: true
+    commands:
+      - '[console] lp user %player% permission set essentials.nick'
+      - '[message] &8[&6Vouchers&8] &7You just redeemed your &a&l/NICK VOUCHER&7.'
+  germ:
+    item-material: BOOK
+    display-name: '&8[&3Germ&8] &7Voucher'
+    lore:
+      - '&7&oRight-Click to redeem.'
+      - '&fGives you Germ rank.'
+    glowing: true
+    autosell: false
+    store: true
+    commands:
+      - '[console] lp user %player% parent add Germ'
+      - '[message] &8[&6Vouchers&8] &7You just redeemed your &8[&3Germ&8] &7Voucher.'
+  bacteria:
+    item-material: BOOK
+    display-name: '&8[&9Bacteria&8] &7Voucher'
+    lore:
+      - '&7&oRight-Click to redeem.'
+      - '&fGives you Bacteria rank.'
+    glowing: true
+    autosell: false
+    store: true
+    commands:
+      - '[console] lp user %player% parent add Bacteria'
+      - '[message] &8[&6Vouchers&8] &7You just redeemed your &8[&9Bacteria&8] &7Voucher.'
+  echest:
+    item-material: PAPER
+    display-name: '&6&l/ECHEST VOUCHER'
+    lore:
+      - '&7&oRight-Click to redeem.'
+      - '&fGives you /fly.'
+    glowing: true
+    autosell: false
+    store: true
+    commands:
+      - '[console] lp user %player% permission set essentials.enderchest'
+      - '[message] &8[&6Vouchers&8] &7You just redeemed your &6&l/ECHEST VOUCHER&7.'
+  mineparty:
+    item-material: REDTORCH
+    display-name: '&6&oMineParty'
+    lore:
+      - '&7&oRight-Click to redeem.'
+      - '&6Summon a MineParty.'
+    glowing: true
+    autosell: false
+    store: true
+    commands:
+      - '[console] mineparty start'
+      - '[message] &8[&6Vouchers&8] &7You just started a &6&oMineParty&7.'
+  common-1:
+    item-material: Sunflower
+    display-name: '&8&l[&6&l+&8&l] &eSell Multiplier &8&l[&6&l+&8&l]'
+    lore:
+      - '&7&oRight-Click to redeem.'
+      - '&eMultiplier: &72'
+      - '&eDuration: &70h 3m 0s'
+    glowing: true
+    autosell: true
+    store: false
+    multiplier: 2.0
+    commands:
+      - '[console] asa stackmultiplier %player_name% 2 03'
+      - '[message] &8[&6Vouchers&8] &7Hey &6%player_name%&7! You have consumed a voucher!'
+  rare-1:
+    item-material: Sunflower
+    display-name: '&8&l[&6&l+&8&l] &eSell Multiplier &8&l[&6&l+&8&l]'
+    lore:
+      - '&7&oRight-Click to redeem.'
+      - '&eMultiplier: &72'
+      - '&eDuration: &70h 5m 0s'
+    glowing: true
+    autosell: true
+    store: false
+    multiplier: 2.0
+    commands:
+      - '[console] asa stackmultiplier %player_name% 2 05'
+      - '[message] &8[&6Vouchers&8] &7Hey &6%player_name%&7! You have consumed a voucher!'
+  plague-1:
+    item-material: Sunflower
+    display-name: '&8&l[&6&l+&8&l] &eSell Multiplier &8&l[&6&l+&8&l]'
+    lore:
+      - '&7&oRight-Click to redeem.'
+      - '&eMultiplier: &73'
+      - '&eDuration: &70h 10m 0s'
+    glowing: true
+    autosell: true
+    store: false
+    multiplier: 3.0
+    commands:
+      - '[console] asa stackmultiplier %player_name% 3 010'
+      - '[message] &8[&6Vouchers&8] &7Hey &6%player_name%&7! You have consumed a voucher!'
+  plague-2:
     item-material: Sunflower
     display-name: '&8&l[&6&l+&8&l] &eSell Multiplier &8&l[&6&l+&8&l]'
     lore:
       - '&7&oRight-Click to redeem.'
       - '&eMultiplier: &73'
       - '&eDuration: &70h 15m 0s'
-    glowing: false
+    glowing: true
     autosell: true
+    store: false
     multiplier: 3.0
     commands:
       - '[console] asa stackmultiplier %player_name% 3 015'
       - '[message] &8[&6Vouchers&8] &7Hey &6%player_name%&7! You have consumed a voucher!'
-  plaque-3:
-    item-material: Sunflower
-    display-name: '&8&l[&6&l+&8&l] &eSell Multiplier &8&l[&6&l+&8&l]'
-    lore:
-      - '&7&oRight-Click to redeem.'
-      - '&eMultiplier: &71.5'
-      - '&eDuration: &70h 15m 0s'
-    glowing: true
-    autosell: true
-    multiplier: 1.5
-    commands:
-      - '[console] asa stackmultiplier %player_name% 1.5 015'
-      - '[message] &8[&6Vouchers&8] &7Hey &6%player_name%&7! You have consumed a voucher!'
-  test:
-    item-material: Paper
-    display-name: 'Test Voucher'
-    lore:
-      - 'Test'
-    glowing: true
-    autosell: false
-    commands:
-      - '[message] U suck'

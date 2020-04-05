@@ -43,7 +43,7 @@ public class VoucherRedeemListener implements Listener
         }
 
         final String voucher_type = ItemUtil.getNBTString(item, "voucher-type");
-        final String voucher_uuid = ItemUtil.getNBTString(item, "voucher-uuid");
+        final boolean voucher_store = Boolean.valueOf(ItemUtil.getNBTString(item, "voucher-store"));
         final ConfigurationSection vouchers = plugin.getConfig().getConfigurationSection("vouchers");
         final ConfigurationSection messages = plugin.getConfig().getConfigurationSection("messages");
 
@@ -52,7 +52,7 @@ public class VoucherRedeemListener implements Listener
             return;
         }
 
-        if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK)
+        if (action != Action.RIGHT_CLICK_AIR)
         {
             return;
         }
@@ -63,21 +63,29 @@ public class VoucherRedeemListener implements Listener
             actions.add(PAPIUtil.parse(player, a));
         }
 
-        if (plugin.getDataManager().getVoucherStatus(voucher_uuid))
+        if (voucher_store)
         {
-            if (messages == null)
-            {
-                return;
-            }
+            final String voucher_uuid = ItemUtil.getNBTString(item, "voucher-uuid");
 
-            String message = messages.getString("invalid-voucher");
-
-            if (message.contains("%voucher-uuid%"))
+            if (voucher_uuid != null)
             {
-                message = message.replace("%voucher-uuid%", voucher_uuid);
+                if (plugin.getDataManager().getVoucherStatus(voucher_uuid))
+                {
+                    if (messages == null)
+                    {
+                        return;
+                    }
+
+                    String message = messages.getString("invalid-voucher");
+
+                    if (message.contains("%voucher-uuid%"))
+                    {
+                        message = message.replace("%voucher-uuid%", voucher_uuid);
+                    }
+                    player.sendMessage(StringUtil.translate(message));
+                    return;
+                }
             }
-            player.sendMessage(StringUtil.translate(message));
-            return;
         }
 
         final String voucherMultiplier = ItemUtil.getNBTString(item, "autosell");
@@ -97,11 +105,23 @@ public class VoucherRedeemListener implements Listener
             }
         }
 
-        plugin.getDataManager().setVoucherStatus(voucher_uuid, true);
-        plugin.getDataManager().saveFileAsync(true);
+        if (voucher_store)
+        {
+            final String voucher_uuid = ItemUtil.getNBTString(item, "voucher-uuid");
+            plugin.getDataManager().setVoucherStatus(voucher_uuid, true);
+            plugin.getDataManager().saveFileAsync(true);
+        }
 
         manager.runActions(player, actions);
-        player.getInventory().setItemInHand(null);
+
+        if (player.getInventory().getItemInHand().getAmount() == 1)
+        {
+            player.getInventory().setItemInHand(null);
+        }
+        else
+        {
+            player.getInventory().getItemInHand().setAmount(player.getInventory().getItemInHand().getAmount() - 1);
+        }
     }
 
 }

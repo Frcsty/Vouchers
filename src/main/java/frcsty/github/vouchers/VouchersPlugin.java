@@ -2,6 +2,7 @@ package frcsty.github.vouchers;
 
 import frcsty.github.vouchers.commands.manager.CommandsManager;
 import frcsty.github.vouchers.commands.manager.DataManager;
+import frcsty.github.vouchers.listeners.EventListeners;
 import frcsty.github.vouchers.listeners.VoucherRedeemListener;
 import frcsty.github.vouchers.listeners.actions.ActionsManager;
 import frcsty.github.vouchers.utility.TabComplete;
@@ -39,6 +40,7 @@ public final class VouchersPlugin extends JavaPlugin
         getCommand(getConfig().getString("settings.base-command")).setTabCompleter(tabComplete);
 
         getServer().getPluginManager().registerEvents(new VoucherRedeemListener(this), this);
+        getServer().getPluginManager().registerEvents(new EventListeners(), this);
     }
 
     @Override
