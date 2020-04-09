@@ -3,9 +3,9 @@ package frcsty.github.vouchers.commands;
 import com.codeitforyou.lib.api.command.Command;
 import com.codeitforyou.lib.api.general.StringUtil;
 import com.codeitforyou.lib.api.item.ItemBuilder;
-import com.codeitforyou.lib.api.xseries.XMaterial;
 import com.google.common.primitives.Ints;
 import frcsty.github.vouchers.VouchersPlugin;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -61,7 +61,7 @@ public class GiveCommand
         {
             if (voucher.equalsIgnoreCase(vo))
             {
-                material = XMaterial.valueOf(vouchers.getString(vo + ".item-material").toUpperCase()).parseMaterial();
+                material = Material.valueOf(vouchers.getString(vo + ".item-material"));
                 display_name = vouchers.getString(vo + ".display-name");
                 lore = vouchers.getStringList(vo + ".lore");
                 glowing = vouchers.getBoolean(vo + ".glowing");
@@ -83,8 +83,8 @@ public class GiveCommand
         }
         if (glowing)
         {
-            final ItemStack item = builder.getItem();
-            final ItemMeta meta = item.getItemMeta();
+            ItemStack item = builder.getItem();
+            ItemMeta meta = item.getItemMeta();
 
             meta.addEnchant(Enchantment.DURABILITY, 1, true);
             meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -121,7 +121,9 @@ public class GiveCommand
                 plugin.getDataManager().saveFileAsync(true);
             }
 
-            giveVoucher(target, builder, amount);
+            sendVoucherReceiverMessage(target, messages, voucher, amount);
+            sendVoucherGiveMessage(sender, messages, target.getName(), voucher, amount);
+            giveVoucher(target, builder.getItem(), amount);
         }
         else
         {
@@ -146,21 +148,23 @@ public class GiveCommand
                     createVoucherData(builder, plugin);
                 }
 
-                giveVoucher(Bukkit.getPlayer(uuid), builder, amount);
+                sendVoucherReceiverMessage(Bukkit.getPlayer(uuid), messages, voucher, amount);
+                giveVoucher(Bukkit.getPlayer(uuid), builder.getItem(), amount);
             }
 
+            sendVoucherGiveMessage(sender, messages, "Everyone", voucher, amount);
             plugin.getDataManager().saveFileAsync(true);
         }
 
     }
 
-    private static void giveVoucher(final Player target, final ItemBuilder builder, final int amount)
+    private static void giveVoucher(final Player target, final ItemStack builder, final int amount)
     {
         if (target.getInventory().firstEmpty() != -1)
         {
             for (int i = 0; i < amount; i++)
             {
-                target.getInventory().addItem(builder.getItem());
+                target.getInventory().addItem(builder);
             }
         }
         else
@@ -169,7 +173,7 @@ public class GiveCommand
 
             for (int i = 0; i < amount; i++)
             {
-                location.getWorld().dropItem(location, builder.getItem());
+                location.getWorld().dropItem(location, builder);
             }
         }
     }
@@ -182,4 +186,20 @@ public class GiveCommand
 
         plugin.getDataManager().setVoucherStatus(voucher_uuid, false);
     }
+
+    private static void sendVoucherGiveMessage(final CommandSender sender, final ConfigurationSection messages, final String target, final String voucher, final int amount)
+    {
+        sender.sendMessage(StringUtil.translate(messages.getString("give-voucher"))
+                                     .replace("%target%", target)
+                                     .replace("%voucher%", StringUtils.capitalize(voucher))
+                                     .replace("%amount%", String.valueOf(amount)));
+    }
+
+    private static void sendVoucherReceiverMessage(final Player target, final ConfigurationSection messages, final String voucher, final int amount)
+    {
+        target.sendMessage(StringUtil.translate(messages.getString("receive-voucher")
+                                                        .replace("%voucher%", StringUtils.capitalize(voucher)
+                                                        .replace("%amount%", String.valueOf(amount)))));
+    }
+
 }

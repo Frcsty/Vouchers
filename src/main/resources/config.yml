@@ -16,6 +16,8 @@ messages:
   administrator! &8(&f%voucher-uuid%&8)'
   active-multiplier: '&8[&6Vouchers&8] &7You currently have an incompatible booster active! Once it runs out,
   you may redeem your voucher!'
+  give-voucher: '&8[&6Vouchers&8] &7You have given &6%amount%&7x &6%voucher% &7vouchers to &6%target%&7.'
+  receive-voucher: '&8[&6Vouchers&8] &7You have been given &6%amount%&7x &6%voucher% &7vouchers!'
 
 vouchers:
   rename-nocolor:
