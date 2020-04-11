@@ -198,8 +198,8 @@ public class GiveCommand
     private static void sendVoucherReceiverMessage(final Player target, final ConfigurationSection messages, final String voucher, final int amount)
     {
         target.sendMessage(StringUtil.translate(messages.getString("receive-voucher")
-                                                        .replace("%voucher%", StringUtils.capitalize(voucher)
-                                                        .replace("%amount%", String.valueOf(amount)))));
+                                                        .replace("%voucher%", StringUtils.capitalize(voucher))
+                                                        .replace("%amount%", String.valueOf(amount))));
     }
 
 }
